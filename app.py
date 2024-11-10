@@ -40,6 +40,7 @@ def load_data(filename):
 
 # Inicializar la aplicación Dash
 app = dash.Dash(__name__)
+server = app.server
 
 # Definir el layout
 app.layout = html.Div([
