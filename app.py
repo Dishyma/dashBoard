@@ -40,7 +40,6 @@ def load_data(filename):
 
 # Inicializar la aplicación Dash
 app = dash.Dash(__name__)
-server = app.server
 
 # Definir el layout
 app.layout = html.Div([
@@ -226,4 +225,4 @@ app.clientside_callback(
 )
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server(host='0.0.0.0', port=8000, debug=True)
