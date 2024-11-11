@@ -62,8 +62,7 @@ app.layout = html.Div([
                 id='file-selector',
                 options=[
                     {'label': 'Golpe 1', 'value': 'golpe1'},
-                    {'label': 'Golpe 2', 'value': 'golpe2'},
-                    {'label': 'Analisis', 'value': 'analisis'}  # Nueva opción añadida
+                    {'label': 'Golpe 2', 'value': 'golpe2'}
                 ],
                 value='golpe2',
                 style=DROPDOWN_STYLE
@@ -98,7 +97,7 @@ app.layout = html.Div([
                         }
                     ),
                 ], style={'marginTop': '10px'})
-            ], style={'width': '20 %', 'display': 'inline-block', 'verticalAlign': 'top'}),
+            ], style={'width': '20%', 'display': 'inline-block', 'verticalAlign': 'top'}),
             
             # Contenedor derecho para la gráfica
             html.Div([
@@ -118,7 +117,7 @@ def update_checklist_options(selected_file):
     if df.empty:
         return html.Div("Error: Archivo no encontrado")
     
-    columns_to_plot = [col for col in df.columns if col != 'Golpes']  # Cambiado 't' por 'Golpes'
+    columns_to_plot = [col for col in df.columns if col != 't']
     return dcc.Checklist(
         id='variables-checklist',
         options=[{'label': ' ' + col, 'value': col} for col in columns_to_plot],
@@ -166,23 +165,25 @@ def update_graph(selected_variables, selected_file):
     
     for col in selected_variables:
         fig.add_trace(
-            go.Bar(  # Cambiado a Bar para representar los datos
-                x=df['Golpes'],
+            go.Scatter(
+                x=df['t'],
                 y=df[col],
                 name=col,
-                marker=dict(line=dict(width=2))
+                mode='lines+markers',
+                line=dict(width=2),
+                marker=dict(size=6)
             )
         )
     
     fig.update_layout(
         title={
-            'text': f'Variables vs Golpes - {selected_file.capitalize()}',
+            'text': f'Variables vs Tiempo - {selected_file.capitalize()}',
             'y':0.95,
             'x':0.5,
             'xanchor': 'center',
             'yanchor': 'top'
         },
-        xaxis_title='Golpes',
+        xaxis_title='Tiempo (s)',
         yaxis_title='Valor',
         template="plotly_white",
         height=700,
