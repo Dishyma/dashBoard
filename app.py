@@ -62,9 +62,10 @@ app.layout = html.Div([
                 id='file-selector',
                 options=[
                     {'label': 'Golpe 1', 'value': 'golpe1'},
-                    {'label': 'Golpe 2', 'value': 'golpe2'}
+                    {'label': 'Golpe 2', 'value': 'golpe2'},
+                    {'label': 'Analisis', 'value': 'analisis'}  # Nueva opción añadida
                 ],
-                value='golpe2',
+                value='golpe3',
                 style=DROPDOWN_STYLE
             )
         ], style=CONTAINER_STYLE),
@@ -97,7 +98,7 @@ app.layout = html.Div([
                         }
                     ),
                 ], style={'marginTop': '10px'})
-            ], style={'width': '20%', 'display': 'inline-block', 'verticalAlign': 'top'}),
+            ], style={'width': '20 %', 'display': 'inline-block', 'verticalAlign': 'top'}),
             
             # Contenedor derecho para la gráfica
             html.Div([
@@ -117,7 +118,7 @@ def update_checklist_options(selected_file):
     if df.empty:
         return html.Div("Error: Archivo no encontrado")
     
-    columns_to_plot = [col for col in df.columns if col != 't']
+    columns_to_plot = [col for col in df.columns if col != 'Golpes']  # Cambiado 't' por 'Golpes'
     return dcc.Checklist(
         id='variables-checklist',
         options=[{'label': ' ' + col, 'value': col} for col in columns_to_plot],
@@ -165,25 +166,23 @@ def update_graph(selected_variables, selected_file):
     
     for col in selected_variables:
         fig.add_trace(
-            go.Scatter(
-                x=df['t'],
+            go.Bar(  # Cambiado a Bar para representar los datos
+                x=df['Golpes'],
                 y=df[col],
                 name=col,
-                mode='lines+markers',
-                line=dict(width=2),
-                marker=dict(size=6)
+                marker=dict(line=dict(width=2))
             )
         )
     
     fig.update_layout(
         title={
-            'text': f'Variables vs Tiempo - {selected_file.capitalize()}',
+            'text': f'Variables vs Golpes - {selected_file.capitalize()}',
             'y':0.95,
             'x':0.5,
             'xanchor': 'center',
             'yanchor': 'top'
         },
-        xaxis_title='Tiempo (s)',
+        xaxis_title='Golpes',
         yaxis_title='Valor',
         template="plotly_white",
         height=700,
