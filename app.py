@@ -65,7 +65,7 @@ app.layout = html.Div([
                     {'label': 'Golpe 2', 'value': 'golpe2'},
                     {'label': 'Analisis', 'value': 'analisis'}  # Nueva opción añadida
                 ],
-                value='golpe3',
+                value='golpe2',
                 style=DROPDOWN_STYLE
             )
         ], style=CONTAINER_STYLE),
